@@ -1,3 +1,0 @@
-all:
-	gcc main.c Menu.c Pass2.c -o Pass
-	clear 
