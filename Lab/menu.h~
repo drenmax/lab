@@ -1,0 +1,5 @@
+void menuInput(void);
+void menuSearchPass(void);
+void menuSearchVoyage(void);
+void MainMenu(void);
+int mainMenu(char *file1, char *file2);

@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include "Pass2.h"
+#include "menu.h"
+
+int mainMenu(char *file1, char *file2)
+  {
+  struct Voyage *ghul;
+  struct Passenger *vad;
+  int k, l, n=10;
+  int a, p, m=0;
+  ghul=NULL;
+  vad=NULL;
+  
+  if (file1==NULL&&file2==NULL)
+    {
+    printf("Нет файлов\n");
+    return 0;
+    }
+  printf("\tМеню\n1. Загрузить данные\n2. Добавить элемент\n3. Вывести данные\n4. Поиск пассажиров\n5. Поиск рейсов\n6. Удалить пассажира\n7. Удалить рейс\n0. Выход\n");
+  while (n!=0)
+    {
+    printf("Выберите нужный пункт: ");
+    scanf("%d", &n);
+    switch(n)
+      {
+      case 1:
+        ghul=LoadVo (file1, ghul, &l);
+        vad=LoadPass (file2, vad, &k);
+      break;
+      case 2:
+        a=1;
+        while(a!=0)
+          {
+          menuInput();
+          scanf("%d", &p);
+          switch(p)
+            {
+            case 1:
+              inputPass(file1, file2, ghul, l);
+	      vad=LoadPass (file2, vad, &k);
+	      ghul=LoadVo (file1, ghul, &l);
+            break;
+            case 2:
+              inputVoyage(file1);
+	      ghul=LoadVo (file1, ghul, &l);
+            break;
+            case 0:
+              a=0;
+            break;
+            default:
+              printf("Некорректная команда\n");
+            }
+          }
+        break;
+      case 3:
+        if (ghul!=NULL&&vad!=NULL)
+          {
+          vyvodPass(vad, k); 
+          vyvodVo(ghul, l);
+          }
+        else
+          printf("База не загужена\n");
+      break;
+      case 4:
+	menuSearchPass();
+	findPass(vad, k);
+      break;
+      case 5:
+	menuSearchVoyage();
+	findVo(ghul, l);
+      break;
+      case 6:
+	DelPass(file1, file2, vad, ghul, k, l);
+	vad=LoadPass (file2, vad, &k);
+	ghul=LoadVo (file1, ghul, &l);
+      break;
+      case 7:
+	delVo(file1, file2, ghul, vad, l, k);
+	vad=LoadPass (file2, vad, &k);
+        ghul=LoadVo (file1, ghul, &l);
+      break;
+      case 0:
+        printf("Выход из программы\n");
+        return 0;
+      default:
+        printf("Некорректная команда\n");
+      }
+    }
+  }
+  
+void menuInput(void)
+  {
+  printf("\n\tДобавление\n");
+  printf("1. Добавить пассажира\n2. Добавить рейс\n0. Выход из меню добавления\n");
+  }
+
+void menuSearchPass(void)
+  {
+  printf ("\n\tПоиск пассажиров\n\n1. Ф.И.О \n2. Номер паспорта\n3. Номер билета\n4. Все пассажиры на рейсе\n0. Выход\n\n");
+  }
+
+void menuSearchVoyage(void)
+  {
+  printf ("\n\tПоиск рейсов\n\n1. Номер рейса \n2. Направление рейса\n3. Дата вылета рейса\n4. Количество мест на рейсе\n5. Количество свободных мест на рейсе\n0. Выход\n\n");
+  }
